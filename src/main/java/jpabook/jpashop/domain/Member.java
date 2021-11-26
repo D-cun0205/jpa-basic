@@ -13,6 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "SELECT m FROM Member m WHERE m.username = :username"
+)
 public class Member {
 
     @Id @GeneratedValue
