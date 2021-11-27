@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain.item;
 
+import jpabook.jpashop.domain.item.visitor.Visitor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,9 @@ public class Movie extends Item {
 
     private String author;
     private String actor;
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
 }

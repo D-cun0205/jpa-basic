@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.domain.item.visitor.Visitor;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,4 +42,6 @@ public abstract class Item {
             throw new NotEnoughStockException("need more stock");
         this.stockQuantity = restStock;
     }
+
+    public abstract void accept(Visitor visitor);
 }

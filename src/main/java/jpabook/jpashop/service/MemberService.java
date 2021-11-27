@@ -22,6 +22,7 @@ public class MemberService {
     }
 
     public void validateDuplicateMember(Member member) {
+        System.out.println("member username : " + member.getUsername());
         List<Member> findMembers = memberRepository.findByUsername(member.getUsername());
         if(!findMembers.isEmpty())
             throw new IllegalStateException("이미 존재하는 회원입니다.");

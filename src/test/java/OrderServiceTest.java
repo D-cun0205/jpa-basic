@@ -1,9 +1,8 @@
-import jpabook.jpashop.domain.Address;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
+import jpabook.jpashop.domain.item.visitor.PrintVisitor;
+import jpabook.jpashop.domain.item.visitor.TitleVisitor;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.service.OrderService;
@@ -78,8 +77,31 @@ public class OrderServiceTest {
 
         //Then
         Order getOrder = orderRepository.findOne(orderId);
+
         assertEquals("주문 취소시 상태는 CANCEL 이다.", OrderStatus.CANCEL, getOrder.getStatus());
         assertEquals("주문이 취소된 상품은 그만큼 재고가 증가해야 한다.", 10, item.getStockQuantity());
+    }
+
+    @Test
+    public void 상속관계와_프록시_VisitorPattern() {
+        Book book = new Book();
+        book.setName("book");
+        book.setAuthor("sanghun");
+        em.persist(book);
+
+        OrderItem insOrderItem = new OrderItem();
+        insOrderItem.setItem(book);
+        em.persist(insOrderItem);
+
+        OrderItem orderItem = em.find(OrderItem.class, insOrderItem.getId());
+        Item item = orderItem.getItem();
+
+        TitleVisitor titleVisitor = new TitleVisitor();
+        item.accept(titleVisitor);
+
+        String title = titleVisitor.getTitle();
+        System.out.println(title);
+
     }
 
     public Member createMember() {
