@@ -70,3 +70,66 @@
   * nullable: true, false 로 null 가능 여부
   * length: 입력 값 제한
   * unique: true, false 로 DB unique 설정
+
+
+### 컬럼과 매핑
+
+#### @Column
+
+* property
+  * name: 필드와 매핑할 테이블의 컬럼 이름
+  * insertable, updatable: 등록, 변경 가능 여부
+  * nullable(DDL): null 값 의 허용 여부 설정, false = not null
+  * unique(DDL): @Table uniqueConstraints 와 같지만 컬럼에 간단히 설정 가능
+  * columnDefinition: 데이터베이스 컬럼 설정을 직접 하는 방법
+    * varchar(100) default 'EMPTY' 와 같이 직접 입력
+  * length(DDL): 문자 길이 제약조건, String Type
+  * precision, scale(DDL): BigDecimal, BigInteger Type 사용
+    * precisionL: 소수점을 포함한 전체 자릿수
+    * scale: 소수의 자리수
+    * 정밀한 소수를 다룰 때 사용
+
+#### @Temporal
+
+  JDK 1.8 부터 사용할 수 있는 LocalDate, LocalDateTime 을 사용하는 경우 TemporalType 을 사용하지 않아도 됨
+  (객체:DB): LocalDate -> date, LocalDateTime -> timestamp 로 적용
+
+* property
+  * value - TemporalType.DATE: 날짜, 데이터베이스 date 타입과 매핑 (2022-01-01)
+  * value - TemporalType.TIME: 시간, 데이터베이스 time 타입과 매핑 (12:12:12)
+  * value - TemporalType.TIMESTAMP: 날짜와 시간, 데이터베이스 timestamp 타입과 매핑 (2022-01-01 12:12:12)
+
+#### @Enumerated
+
+  EnumType.ORDINAL 를 사용하는 경우 치명적인 에러가 발생할 수 있음
+  기존에 USER, ADMIN 2개의 값 을 가진 enum 클래스를 사용 중
+  GUEST 가 필요하여 GUEST, USER, ADMIN 순으로 사용하게 된 경우
+  기존의 값을 USER = 0 -> 1, ADMIN = 1 -> 2 로 변경한 후 적용하면 사용 가능하나
+  문자열을 사용하는 경우 이런 고민 조차 할 필요가 없다
+
+* property
+  * value - EnumType.ORDINAL: enum 순서를 데이터베이스에 저장
+  * value - EnumType.STRING: enum 이름을 데이터베이스에 저장
+
+
+#### @Lob
+
+* 데이터베이스 BLOB, CLOB 타입과 매핑
+* @Lob 에는 속성이 없음
+* 매핑하는 필드 타입이 문자면 CLOB, 나머지는 BLOB 매핑
+  * CLOB: String, char[], java.sql.CLOB
+  * BLOB: byte[], java.sql.BLOB
+
+#### @Transient
+
+* 필드 매핑을 원하지 않은 경우
+* 데이터베이스에 저장, 조회를 하지 않음
+* 메모리에 임시로 어떤 값을 보관하고 싶은 경우
+
+### 기본 키 매핑
+
+* 직접 할당: @Id 어노테이션만 사용
+* 자동 생성: @GeneratedValue
+
+
+#### @GeneratedValue - 
