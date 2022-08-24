@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+//@Entity
 public class Category {
     @Id @GeneratedValue
     @Column(name = "category_id")
@@ -12,7 +12,7 @@ public class Category {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 

@@ -4,8 +4,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-public class Item {
+//@Entity
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn
+public abstract class Item {
     @Id @GeneratedValue
     @Column(name = "item_id")
     private Long id;
