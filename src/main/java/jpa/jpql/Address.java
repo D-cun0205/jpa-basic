@@ -1,8 +1,8 @@
-package jpa.embeddedtype;
+package jpa.jpql;
 
 import javax.persistence.Embeddable;
 
-//@Embeddable
+@Embeddable
 public class Address {
     private String city;
     private String street;
